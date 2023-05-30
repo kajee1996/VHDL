@@ -1,0 +1,121 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 23.05.2023 12:53:03
+-- Design Name: 
+-- Module Name: tutorial_1 - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity tutorial_1 is
+--  Port ( );
+Port(
+ clk_in : in std_logic;
+    reset : in std_logic;
+
+ SW8 : in std_logic;
+ BTNR : in std_logic; 
+ SW :in std_logic;
+ SW2 : in std_logic;  
+  
+ LED : out std_logic;
+ LED17_B : out std_logic;
+ CA : out std_logic;
+ CB : out std_logic; 
+ CC : out std_logic; 
+ AN_0 : out std_logic;  
+ AN_1 : out std_logic
+
+ 
+);
+end tutorial_1;
+
+architecture Behavioral of tutorial_1 is
+
+ signal counter : integer range 0 to 249999 := 0; -- Divide 50 MHz clock by 2
+  signal clk_out : std_logic := '0';
+  constant DIVIDER_VALUE : integer := 249999; -- Divide factor (50 MHz / (DIVIDER_VALUE + 1))
+
+
+begin
+
+ 
+process(BTNR, SW8,SW, SW2,clk_in, reset)
+begin 
+
+if reset = '1' then
+      counter <= 0;
+      clk_out <= '0';
+    elsif rising_edge(clk_in) then
+      if counter = DIVIDER_VALUE then
+        counter <= 0;
+        clk_out <= not clk_out;
+      else
+        counter <= counter + 1;
+      end if;
+    end if;
+
+if BTNR = '1' then 
+
+  LED <= '1';
+  else LED <= '0';
+  
+  end if;
+  
+  if SW8 = '1' then
+ 
+  LED17_B <= clk_out;
+  --else LED17_B <= '0'; 
+ end if;
+ 
+ 
+ if SW = '1' then 
+
+  CA <= '1';
+  
+  AN_0 <= '1';
+  else CA <= '0';
+  AN_0 <= '0';
+  
+  end if;
+  
+  if SW2 = '1' then
+  
+  CB <= '1';
+  CC <= '1';
+  AN_1 <= '1';
+  else CB <= '0'; 
+  CC <= '0';
+  AN_1 <= '0';
+ end if;
+ 
+
+ 
+ 
+ end process;
+ 
+end Behavioral;
